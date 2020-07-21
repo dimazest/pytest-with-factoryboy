@@ -52,6 +52,11 @@ class FunctionCall:
     def __call__(self):
         return {"df": self.df, "other_df": self.other_df}
 
+    def _to_expected(self):
+        result = self()
+
+        return result["df"]["data"], result["other_df"]["data"]
+
 
 class FunctionCallFactory(factory.Factory):
     class Meta:
@@ -71,6 +76,4 @@ pytest_factoryboy.register(FunctionCallFactory, "fc")
 def test_function_call(fc, spark_session, fc__df__data, fc__other_df__data):
     assert fc.df["spark_session"] is spark_session
 
-    result = fc()
-
-    assert result["df"]["data"] == fc__df__data
+    assert fc._as_expected() == (fc__df__data, fc__other_df__data)
