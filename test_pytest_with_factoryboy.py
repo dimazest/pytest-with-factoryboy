@@ -48,7 +48,6 @@ class FunctionCall:
         for k, v in kwargs.items():
             setattr(self, k, v)
 
-
     def __call__(self):
         return {"df": self.df, "other_df": self.other_df}
 
